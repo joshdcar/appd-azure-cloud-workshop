@@ -4,6 +4,7 @@ The workshop makes use of tools and techniques commonly used with Azure customer
 
 * [Home Brew](https://brew.sh/) (Mac Only) - A Package Manager for Mac OS
 * [Visual Studio Code](https://code.visualstudio.com/) - A cross-platform, free, and highly extensible code editor and debugger from Microsoft.
+* [Git](https://git-scm.com) - Git is a free open source distributed version controle system.[[Install](https://git-scm.com)]
 * [Powershell](https://docs.microsoft.com/en-us/powershell/scripting/overview?view=powershell-7) - A cross platform scripting language from Microsoft. [[Windows](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-windows?view=powershell-7)] [[Mac](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-macos?view=powershell-7)]
 * [Microsoft .Net Core 3.1 SDK](https://dotnet.microsoft.com/download/dotnet-core/3.1) - The .net core (cross platform) Software Development Kit (SDK). [[Windows](https://dotnet.microsoft.com/download)] [[Mac](https://dotnet.microsoft.com/download)]
 * [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/what-is-azure-cli?view=azure-cli-latest) - The official Azure Command Line Interface (CLI) for managing Azure resources.[[Windows](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-windows?view=azure-cli-latest)] [[Mac](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-macos?view=azure-cli-latest)]
@@ -35,6 +36,7 @@ Visual Studio Code has thousands of extensions. The following are extensions you
 
 #### General Extensions
 
+* **Github** - Makes working with Github Repos easier
 * **Atom One Dark Theme** - Pretty awesome dark theme
 
 #### Installing Extensions
