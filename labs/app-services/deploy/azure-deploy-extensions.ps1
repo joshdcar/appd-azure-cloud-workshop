@@ -30,9 +30,9 @@ if(Test-path $apiPackage) {Remove-item $apiPackage}
 Add-Type -assembly "system.io.compression.filesystem"
 [io.compression.zipfile]::CreateFromDirectory($apiPublishFolder, $apiPackage)
 
-#Deploy Function + Service Bus Queue w/ ARM Template
-$provisionFile = "azure-deploy.json"
+$provisionFile = "azure-deploy-extensions.json"
 
+#Deploy Function + Service Bus Queue w/ ARM Template
 [array]$appNames = (az group deployment create `
             --name "appd-azure-deployment" `
              --resource-group $resourceGroup `
