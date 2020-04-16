@@ -10,9 +10,16 @@ The workshop makes use of tools and techniques commonly used with Azure customer
 * [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/what-is-azure-cli?view=azure-cli-latest) - The official Azure Command Line Interface (CLI) for managing Azure resources.[[Windows](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-windows?view=azure-cli-latest)] [[Mac](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-macos?view=azure-cli-latest)]
 * [Azure Powershell Modules](https://docs.microsoft.com/en-us/powershell/azure/?view=azps-3.7.0) - Powershell modules for managing Azure resources.[[Install](https://docs.microsoft.com/en-us/powershell/azure/install-az-ps?view=azps-3.7.0)]
 
-## Recommended Extras
+## Recommended Online Resources
 
-### Visual Studio Code Extensions
+Although this workshop covers many of the basics of Azure in the context of AppDynamics there are many resources to get additional knowledge.  [Microsoft Learn](https://docs.microsoft.com/en-us/learn/) is a highly recommended source.  Specific learning paths and modules are recommended prior to each lab. The folowing are recommended modules that should be considered for review prior to the workshop:
+
+* [Introduction to Azure](https://docs.microsoft.com/en-us/learn/modules/welcome-to-azure/)
+* [Introduction to the Azure Portal](https://docs.microsoft.com/en-us/learn/modules/tour-azure-portal/)
+* [Compute Options on Azure](https://docs.microsoft.com/en-us/learn/modules/intro-to-azure-compute/)
+
+
+## Optional Extras - Visual Studio Code Extensions
 
 Visual Studio Code has thousands of extensions. The following are extensions you may find helpful in the workshop and in general working with Azure.
 
