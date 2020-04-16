@@ -27,13 +27,13 @@ The workshop coordinate will provide you a configuration file that contains both
 
 > **ADVICE:** If you would like to have additional time with the resources or lab material following the workshop consider making a request to your organizer if they can delay deleting your Azure resources and access for a couple days.
 
-## Getting Started
+## **Getting Started**
 
 ### Attendees
 
 Attendees should ensure that they have all the pre-requisites installed prior to starting the labs:
 
-* [Required Lab Prerequisites](labs/labs-prereqs.md)
+* [Required Lab Prerequisites](./labs/labs-prereqs.md)
 * [Configuring Lab Environment](./labs/lab.md)
 
 > ADVICE: Each lab contains helpful links to online learning paths for Azure from Microsoft Learn. Microsoft >Learn is a selfpaced, guided, and interactive training site for Microsoft Azure. Microsoft Learn provides a >short lived sandboxed Azure subscription as part of their guided lesson.  The entire experience is gamafied >so you can earn baddges and rewards as you learn more about Azure.  More details available at [Microsoft >Learn](https://docs.microsoft.com/en-us/learn/).
@@ -43,3 +43,14 @@ Attendees should ensure that they have all the pre-requisites installed prior to
 If you're an organizer you can find more details on preparing an Azure subscription for the lab and creating atteendee accounts & resources.
 
 * [Organizer Instructions](./organizer/readme.md)
+
+
+## **Labs**
+
+
+| Lab   |      Primary Objective     |  Secondary Objective |  Bonus Objective |
+|----------|:-------------|:------|:------|
+| [Azure App Services](./labs/app-services/azure-app-service-monitoring.md) |  Deploying Agents via Site Extensions | Provision Resources w/ ARM Templates | Configure Analytics |
+| [Azure Monitor Extensions](./labs/azure-extensions/azure-extensions.md) |    Configure Azure Monitor   | Provision Resources w/ Azure CLI | Monitor Multiple Resources |
+| [Azure Functions](./labs/azure-functions/azure-functions.md) | Deploying Agents via Site Extensions | Provision Resources w/ Powershell | SQL & CosmosDB Metrics |
+| [Azure Kubernetes Services (AKS)](./labs/aks/aks.md) | Deploy Cluster Agent |    kubectl with AKS |  |

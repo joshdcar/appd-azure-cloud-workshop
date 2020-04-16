@@ -1,6 +1,6 @@
 # Azure App Services
 
-[TODO: FlowMap Image]
+![scpFlowmap][scpFlowmap]
 
 # App Service Overview
 
@@ -20,7 +20,11 @@ Azure App Services supports various languages and platforms from windows and lin
 
 Because Azure App Services is in a managed environment there is no access to the underlying operating system and runs within a [Sandbox](https://github.com/projectkudu/kudu/wiki/Azure-Web-App-sandbox) which comes with some restrictions on some of the processes that can be run and executed. This includes no ability to "Remote Desktop" into the servers and perform common tasks like viewing processes, logs, uploading files, etc.
 
-To compensate for this each Azure App Service has a Kudu site deployed along side it. Kudu is a web based management interface where you can perform various administrative tasks (beyond the portal administration) and also provides some of the underlying functionality provided by Azure App Services such as git based deployments. Kudu sites have a naming convention of *https://[my-site-name]-scm.azurewebsites.net*. Even when a site has a custom domain it still retains the original default "azurewebsites.net" domain and scm prefix. Kudo is generally launched from the administrative pages of Azure App Services on the portal. 
+![kuduHome][kuduHome]
+
+To compensate for this each Azure App Service has a Kudu site deployed along side it. Kudu is a web based management interface where you can perform various administrative tasks (beyond the portal administration) and also provides some of the underlying functionality provided by Azure App Services such as git based deployments. Most importantly Kudu is the engine that manages and deploys **site extensions**.  
+
+Kudu sites have a naming convention of *https://[my-site-name].scm.azurewebsites.net*. Even when a site has a custom domain it still retains the original default "azurewebsites.net" domain and scm prefix. Kudo is generally launched from the administrative pages of Azure App Services on the portal. 
 
 **Kudu plays a very important role with AppDynamics** and provides us the interface to troubleshoot agent deployments and access to agent logs. 
 
@@ -107,26 +111,88 @@ Verify that the web site is up and running by visiting it in your browser. You c
 
 ![scpSite][scpSite]
 
-## **EXTRA CREDIT** Better Understanding the Deployment Script  
+
+## **Step #2** - Installing the AppDynamics Agent
+
+In this step we will be installing and configuring the Appdynamics Agents through Site Extensions. **You will need the the name and access key from your controller**. 
+
+> **TIP** Site Extensions can be deployed and configured automatically through ARM Templates. Review the ARM Template **azure-deploy-extensions.json** located within this labs deployment folder. Take special note of the site extension elements along with the appdynamics appsettings elements.  This is a true zero touch deployment mechansim that organizations using CI\CD may find attractive. 
+
+
+### 1. Navigate to the Web Azure App service and select **Extensions** from the left menu (scrolling down). Then select **Add**
+
+![extension1][extension1]
+
+### 2. Scroll to the AppDynamics 4.5 extension. Also ensure you accept the legal terms and select **OK** 
+
+![extension2][extension2]
+
+### 3. Confirm the extension has been installed and select **Browse** from the dialog.
+
+![extension3][extension4]
+
+### 4. You should be taken to the AppDynamics Configuration Page. Enter the appropriate details and choose **Validate**
+
+![extension4][extension5]
+
+> **ALERT** On occasion you may get an error relating to path not found (or similiar) when accessing this site after activating the site extensions. Return to the azure portal and restart the web application and try visiting the same page again. 
+
+### 5. As directed - restart the web application.
+
+![extension6][extension6]
+
+### 6. **REPEAT same steps 1-5 for the API App Service**
+
+### 7. Generate traffic on the Second Chance Parts site and ensure you have the flowmap and BTs populating.
+
+![scpFlowmap][scpFlowmap]
+
+## **Step #3** - Reviewing Logs and Troubleshooting 
+
+All files can be access from within the Kudu console by going to **Debug console -> cmd** on the main top menu.
+
+### **AppDynamics Logs**
+
+Logs are available from the Kudu console but not located in the typical .net agent location and instead within the app service's centralized log file location located at **D:\home\logfiles\AppDynamics**.
+
+![kuduLog][kuduLog]
+
+> **Tip** The storage used by Azure App Services is shared across all instances. As additional instances are added to an App Service Plan those logs are all written to the same files. In the profiler folder you will see each file seperated by process id. Those may be process ids that are coming from different instances.
+
+
+### **Additional Agent Settings**
+
+Additional agent settings, for example the AppDynamicsConfig.json can be found at **d:\home\SiteExtensions\AppDynamics.WindowsAzure.SiteExtensions.4.5.Release\AppDynamics**
+
+![kuduAgentFiles][kuduAgentFiles]
+
+### **Confirming Agent is Loaded**
+
+It can be helpful to confirm that the agent is loaded into the application to determine if additional resets are required or if there are other issues preventing the agent from attaching. You can review processes and look for the AppDynamics module is loaded within the process by viewing the **Process Explorer** from the top menu.
+
+![kuduProcesses][kuduProcesses]
+![kuduProcessModules][kuduProcessModules]
+
+<br><br><br>
+
+# **EXTRA CREDIT** Better Understanding the Deployment Script  
 <a name="understandingdeploy"></a>
+
 
 [resourceDiagram]: ../../images/labs/azure_resource_diagram.png "Resource Diagram"
 [deploymentOutput]: ../../images/labs/app_service_deployment.png "Deployment Output"
 [appServiceResources]: ../../images/labs/app_service_resources_portal.png "appServiceResources"
 [appServiceUrl]: ../../images/labs/app_service_url.png "appServiceUrl"
 [scpSite]: ../../images/labs/second_chance_parts_site.png "scpSite"
-
-## **Step #1** - Installing the AppDynamics Agent
-
-
-
-
-
-
-
-
-
-
-
-
-
+[scpFlowmap]: ../../images/labs/second_chance_parts_flowmap.png "scpSite"
+[extension1]: ../../images/labs/site_extensions_1.png "extension1"
+[extension2]: ../../images/labs/site_extensions_2.png "extension2"
+[extension3]: ../../images/labs/site_extensions_3.png "extension3"
+[extension4]: ../../images/labs/site_extensions_4.png "extension4"
+[extension5]: ../../images/labs/site_extensions_5.png "extension5"
+[extension6]: ../../images/labs/site_extensions_6.png "extension6"
+[kuduHome]: ../../images/labs/kudu_home.png "kuduHome"
+[kuduLog]: ../../images/labs/kudu_log.png "kuduLog"
+[kuduAgentFiles]: ../../images/labs/kudu_agent_files.png "kuduAgentFiles"
+[kuduProcesses]: ../../images/labs/kudu_processes.png "kuduProcesses"
+[kuduProcessModules]: ../../images/labs/kudu_process_module.png "kuduProcessModules"
