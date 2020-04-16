@@ -34,7 +34,7 @@ The workshop coordinate will provide you a configuration file that contains both
 Attendees should ensure that they have all the pre-requisites installed prior to starting the labs:
 
 * [Required Lab Prerequisites](./labs/labs-prereqs.md)
-* [Configuring Lab Environment](./labs/lab.md)
+* [Configuring Lab Environment](./labs/labs.md)
 
 > ADVICE: Each lab contains helpful links to online learning paths for Azure from Microsoft Learn. Microsoft >Learn is a selfpaced, guided, and interactive training site for Microsoft Azure. Microsoft Learn provides a >short lived sandboxed Azure subscription as part of their guided lesson.  The entire experience is gamafied >so you can earn baddges and rewards as you learn more about Azure.  More details available at [Microsoft >Learn](https://docs.microsoft.com/en-us/learn/).
 
