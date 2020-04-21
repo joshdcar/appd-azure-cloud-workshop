@@ -1,9 +1,0 @@
-{
-  "AzureResourceGroup": "azure-workshop-jones",
-  "Password": "[password]",
-  "Region": "East US",
-  "Username": "usernames@mysubscription.onmicrosoft.com",
-  "ControllerIpAddress": "[ipaddress]",
-  "ControllerUsername": "[username]",
-  "ControllerPassword": "[password]"
-}

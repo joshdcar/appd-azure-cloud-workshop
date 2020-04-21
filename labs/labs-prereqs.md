@@ -9,6 +9,7 @@ The workshop makes use of tools and techniques commonly used with Azure customer
 * [Microsoft .Net Core 3.1 SDK](https://dotnet.microsoft.com/download/dotnet-core/3.1) - The .net core (cross platform) Software Development Kit (SDK). [[Windows](https://dotnet.microsoft.com/download)] [[Mac](https://dotnet.microsoft.com/download)]
 * [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/what-is-azure-cli?view=azure-cli-latest) - The official Azure Command Line Interface (CLI) for managing Azure resources.[[Windows](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-windows?view=azure-cli-latest)] [[Mac](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-macos?view=azure-cli-latest)]
 * [Azure Powershell Modules](https://docs.microsoft.com/en-us/powershell/azure/?view=azps-3.7.0) - Powershell modules for managing Azure resources.[[Install](https://docs.microsoft.com/en-us/powershell/azure/install-az-ps?view=azps-3.7.0)]
+* Remote Desktop Application of choice [[Mac]](https://docs.microsoft.com/en-us/windows-server/remote/remote-desktop-services/clients/remote-desktop-mac))
 
 ## Recommended Online Resources
 

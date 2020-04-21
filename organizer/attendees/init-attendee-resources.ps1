@@ -24,8 +24,12 @@
 #---------------------------------------------------------------------------------------------------
 
 $domain = "appdcloud.onmicrosoft.com"
-$contollerUsername = "appdamin"
+$contollerUsername = "admin"
 $controllerPassword = "welcome1"
+$githubRepoUrl = "https://github.com/joshdcar/appd-azure-cloud-workshop"
+$vmusername = "appdadmin"
+$sharedPassword = "AppDynamicsR0ck$!"
+$subscriptionId = "d4d4c111-4d43-41b2-bb7f-a9727e5d0ffa"
 
 #Get Environment Configuration
 [array]$attendees = Get-Content ./attendees.json | ConvertFrom-Json 
@@ -39,7 +43,6 @@ foreach($attendee in $attendees) {
     $userPrincipal = "$($attendee.FirstName).$($attendee.LastName)@$domain"
     $displayName = "$($attendee.FirstName) $($attendee.LastName)"
     $email = "$($attendee.email)"
-    $password = "AppDR0ck$!"
 
     #Check if user already exists
     [array]$existingUsers = az ad user list --upn "$userPrincipal" -o tsv
@@ -47,10 +50,11 @@ foreach($attendee in $attendees) {
     if ($existingUsers.Length -eq 0) {
 
         az ad user create --display-name $displayName `
-                  --password $password `
+                  --password $sharedPassword `
                   --user-principal-name $userPrincipal `
                   --force-change-password-next-login false `
-                  --only-show-errors
+                  --only-show-errors `
+                  --output none `
 
         Write-Host ("User Created: $userPrincipal") -ForegroundColor Green
 
@@ -60,7 +64,7 @@ foreach($attendee in $attendees) {
     }
     
     #Create Resource Group & Resource Group Tags
-    $resourceGroup = "azure-workshop-$($attendee.LastName)".ToLower()
+    $resourceGroup = "azure-workshop-$($attendee.FirstName)-$($attendee.LastName)".ToLower()
     $location = $($attendee.Region)
     az group create -n $resourceGroup -l $location --output none
 
@@ -75,7 +79,6 @@ foreach($attendee in $attendees) {
     Write-Host ("Owner Role Assigned to $userPrincipal") -ForegroundColor Green
 
     $vmname="appd-controller-vm"
-    $admin="appdadmin"
 
     #Create Controller VM
     az vm create `
@@ -83,9 +86,26 @@ foreach($attendee in $attendees) {
         --name $vmname `
         --image "/subscriptions/d4d4c111-4d43-41b2-bb7f-a9727e5d0ffa/resourceGroups/workshop-resources/providers/Microsoft.Compute/galleries/Azure_Workshop_Images/images/Azure_Workshop_Controller_Image/versions/1.0.0" `
         --size Standard_D2s_v3 `
-        --admin-username $admin  `
+        --admin-username $vmusername  `
         --os-disk-size-gb 100 `
         --ssh-key-value "../../environment/shared/keys/AppD-Cloud-Kickstart-Azure.pub" `
+        --output none
+
+    #Add 8090 Port Rule for NSG (NSG Name is by convention)
+    $nsgname = -join($vmname, "NSG") 
+
+    az network nsg rule create `
+        --resource-group $resourceGroup `
+        --nsg-name $nsgname `
+        --name http `
+        --access allow `
+        --protocol Tcp `
+        --direction Inbound `
+        --priority 300 `
+        --source-address-prefix "*" `
+        --source-port-range "*" `
+        --destination-address-prefix "*" `
+        --destination-port-range 8090 `
         --output none
 
     #Get the Controller VM Public IP Address
@@ -93,16 +113,75 @@ foreach($attendee in $attendees) {
 
     Write-Host ("Controller VM created at IP $controllerIpAddress") -ForegroundColor Green
 
+    #create the SP for their resource group for use by the extensions
+    az ad sp create-for-rbac -n "appd" --role contributor --scope /subscriptions/{SubID}
+
+    #Create Service Principal for use by the extension with a scope limited to the user's resource group
+    $appName = "appd_sp_$($attendee.FirstName.)_$($attendee.LastName)".ToLower()
+    $scope = "/subscriptions/d4d4c111-4d43-41b2-bb7f-a9727e5d0ffa/resourceGroups/$resourceGroup"
+    $servicePrincipal = az ad sp create-for-rbac -n  --role reader --scopes $scope
+
     $attendeeConfig = @{
-        Username = $userPrincipal
-        Password = $password
         AzureResourceGroup = $resourceGroup
-        ControllerIpAddress = $controllerIpAddress
         Region = $($attendee.Region)
-        ControllerUsername = $contollerUsername
-        ControllerPassword = $controllerPassword
-        } | ConvertTo-Json | Out-File "config_$($attendee.Lastname).json"
+        DotnetAgentVMPassword = $sharedPassword
+        DotnetAgentVMUsername = $vmusername
+        } | ConvertTo-Json | Out-File "./attendee-files/config_$($attendee.Firstname)_$($attendee.Lastname).json"
 
-    Write-Host ("Attendee Configuration Written (config_$($attendee.Lastname).json)") -ForegroundColor Green
+    $attendeeWelcome = @"
 
+    @"
+        Hello $($attendee.FirstName),
+
+        We are looking forward to you joining us on our upcoming AppDynamics Cloud Clickstart for Azure.  The following are some details  
+        that you will need for the workshop. You can find additional instructions for workshop at $githubRepoUrl.
+
+        Please note the following details you will require for the workshop:
+
+        Azure Region: $($attendee.Region)
+        Azure Resource Group: $resourceGroup
+
+        Azure Login Details:
+        Username: $userPrincipal
+        Password: $sharedPassword
+
+        Controller Details:
+        Url: http://$($controllerIpAddress):8090
+        Username: admin
+        Password: $controllerPassword
+        SSH: Enabled (see attached PEM file)
+        
+        Dotnet Agent Login Details:
+        IP Address: Available after provisioning in the lab
+        username: $vmusername
+        password: $sharedPassword
+
+        Service Principal for use with AppDynamics Extensions:
+        $servicePrincipal 
+        
+        Subscription ID (used with extensions): 
+        $subscriptionId
+
+    Additional details for validating your account and and workshop prereqs can be found at $githubRepoUrl.
+     
+"@ | Out-File "./attendee-files/config_$($attendee.Firstname)_$($attendee.Lastname).txt"
+
+    Write-Host ("Attendee Configuration Written (config_$($attendee.Firstname)_$($attendee.Lastname).json)") -ForegroundColor Green
+    Write-Host ("Attendee Configuration Written (config_$($attendee.Firstname)_$($attendee.Lastname).txt)") -ForegroundColor Green
 }
+
+
+
+<# PS /Users/josh.carlisle/dev/AppDynamics/appd-azure-cloud-workshop/labs/azure-extensions/deploy> az ad sp create-for-rbac -n "appd-sp-tony-stark-2" --role reader --scopes /subscript
+ions/d4d4c111-4d43-41b2-bb7f-a9727e5d0ffa/resourceGroups/azure-workshop-tony-stark
+Changing "appd-sp-tony-stark-2" to a valid URI of "http://appd-sp-tony-stark-2", which is the required format used for service principal names
+Creating a role assignment under the scope of "/subscriptions/d4d4c111-4d43-41b2-bb7f-a9727e5d0ffa/resourceGroups/azure-workshop-tony-stark"
+  Retrying role assignment creation: 1/36
+{
+  "appId": "632f406c-25ea-44c9-b8cd-7fc6a46c22f5",
+  "displayName": "appd-sp-tony-stark-2",
+  "name": "http://appd-sp-tony-stark-2",
+  "password": "63d023ad-511a-4aec-af05-fa8cbdd06029",
+  "tenant": "f0705e98-bb08-4271-a963-a72b0f248254"
+}
+PS /Users/josh.carlisle/dev/AppDynamics/appd-azure-cloud-workshop/labs/azure-extensions/deploy>  #>

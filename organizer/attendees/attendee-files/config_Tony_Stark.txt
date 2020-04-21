@@ -1,0 +1,30 @@
+
+    @"
+        Hello Tony,
+
+        We are looking forward to you joining us on our upcoming AppDynamics Cloud Clickstart for Azure.  The following are some details  
+        that you will need for the workshop. You can find additional instructions for workshop at https://github.com/joshdcar/appd-azure-cloud-workshop.
+
+        Please note the following details you will require for the workshop:
+
+        Azure Region: East US
+        Azure Resource Group: azure-workshop-tony-stark
+
+        Azure Login Details:
+        Username: Tony.Stark@appdcloud.onmicrosoft.com
+        Password: AppDynamicsR0ck$!
+
+        Controller Details:
+        Url: http://13.68.229.74:8090
+        Username: admin
+        Password: welcome1
+        SSH: Enabled (see attached PEM file)
+        
+        Dotnet Agent Login Details:
+        IP Address: Available after provisioning in the lab
+        username: appdadmin
+        password: AppDynamicsR0ck$!
+        
+
+    Additional details for validating your account and and workshop prereqs can be found at https://github.com/joshdcar/appd-azure-cloud-workshop.
+     

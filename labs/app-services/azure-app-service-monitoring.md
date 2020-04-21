@@ -34,6 +34,13 @@ Kudu sites have a naming convention of *https://[my-site-name].scm.azurewebsites
 
 Second Chance parts is an online ecommerce company that that sells autoparts sources from auto junk yards. Second Chance Parts has identified Azure App Services as the service of choice because they find the fully managed platform with elastic scaling attractive. 
 
+## Lab Primary Objectives
+
+* Provision Azure App Services to support the Web UI and APIs with ARM Templates
+* Provision and Azure SQL Database with ARM Templates
+* Deploy the application components to Azure App Services
+* Deploy, Configure, and Validation\Troubleshoot the AppDynamics Agent 
+
 ## Tech Stack
 Second Chance Parts is historically a microsoft shop so they have chosen the following application architecture:
 
@@ -41,13 +48,6 @@ Second Chance Parts is historically a microsoft shop so they have chosen the fol
 * ASP.NET Razor Pages
 * ASP.NET Web API (Rest)
 * Azure SQL 
-
-## Lab Primary Objectives
-
-* Provision Azure App Services to support the Web UI and APIs with ARM Templates
-* Provision and Azure SQL Database with ARM Templates
-* Deploy the application components to Azure App Services
-* Deploy, Configure, and Validation\Troubleshoot the AppDynamics Agent 
 
 ## Lab Steps
 
@@ -68,7 +68,7 @@ The following Azure Resources will be deployed as part of this step:
 > *TIP:* This diagram was automatically created using the ARM Template Previewer Extension in Visual Studio Code and will automatically preview any valid ARM Template. In this case the *azure-deploy.json* located in the /labs/app-services/deploy folder of the workshop repo. 
 
 ### **Deployment Script**
-The Azure App Services Lab contains a single unified powershell script found within your project under **/labs/app-services/deploy/azure-deploy.ps1** that performans the following actions:
+The Azure App Services Lab contains a single unified powershell script found within your project under **/labs/app-services/deploy/azure-deploy.ps1** that performs the following actions:
 
 1. Compile and packaging of the the SecondChanceParts component into a "zip" file
 
