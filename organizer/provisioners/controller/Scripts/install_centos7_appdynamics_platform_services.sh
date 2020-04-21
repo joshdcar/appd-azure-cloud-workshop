@@ -54,9 +54,11 @@ usage() {
   cat <<EOF
 Usage:
   Install AppDynamics Events Service and Controller Platform Services by AppDynamics.
+
   NOTE: All inputs are defined by external environment variables.
         Optional variables have reasonable defaults, but you may override as needed.
         Script should be run with 'root' privilege.
+
   -------------------------------------
   Description of Environment Variables:
   -------------------------------------
@@ -71,12 +73,14 @@ Usage:
                                                                         #            (defaults to 'product').
     [root]# export appd_platform_hosts="platformadmin"                  # [optional] platform hosts
                                                                         #            (defaults to 'platformadmin' which is the localhost).
+
   [OPTIONAL] appdynamics events service install parameters [w/ defaults].
     [root]# export appd_events_service_hosts="platformadmin"            # [optional] events service hosts
                                                                         #            (defaults to 'platformadmin' which is the localhost).
     [root]# export appd_events_service_profile="DEV"                    # [optional] appd events service profile (defaults to 'DEV').
                                                                         #            valid profiles are:
                                                                         #              'DEV', 'dev', 'PROD', 'prod'
+
   [OPTIONAL] appdynamics controller install parameters [w/ defaults].
     [root]# export appd_controller_primary_host="platformadmin"         # [optional] controller primary host
                                                                         #            (defaults to 'platformadmin' which is the localhost).
@@ -84,8 +88,10 @@ Usage:
     [root]# export appd_controller_admin_password="welcome1"            # [optional] controller admin password (defaults to 'welcome1').
     [root]# export appd_controller_root_password="welcome1"             # [optional] controller root password (defaults to 'welcome1').
     [root]# export appd_controller_mysql_password="welcome1"            # [optional] controller mysql root password (defaults to 'welcome1').
+
   [OPTIONAL] appdynamics cloud kickstart home folder [w/ default].
     [root]# export kickstart_home="/opt/appd-cloud-kickstart"           # [optional] kickstart home (defaults to '/opt/appd-cloud-kickstart').
+
   --------
   Example:
   --------
