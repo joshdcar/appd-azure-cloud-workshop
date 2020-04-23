@@ -13,7 +13,7 @@ $PublicIPAddressName = "appd-dotnet-ipaddress"
 
 $VMLocalAdminUser = $config.DotnetAgentVMUsername
 $VMLocalAdminSecurePassword = ConvertTo-SecureString $config.DotnetAgentVMPassword -AsPlainText -Force
-$VMSize = "Standard_B2ms"
+$VMSize = "Standard_DS2_v2"
 
 $Credential = New-Object System.Management.Automation.PSCredential ($VMLocalAdminUser, $VMLocalAdminSecurePassword);
 

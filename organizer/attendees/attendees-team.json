@@ -1,0 +1,6 @@
+[
+    { "Region": "eastus2", "FirstName": "Steven", "Lastname": "Rogers", "email": "josh.carlisle@appdynamics.com"},
+    { "Region": "westus", "FirstName": "Bruce", "Lastname": "Banner", "email": "josh.carlisle@appdynamics.com"},
+    { "Region": "centralus", "FirstName": "Stephen", "Lastname": "Strange", "email": "josh.carlisle@appdynamics.com"},
+    { "Region": "southcentralus", "FirstName": "Clinton", "Lastname": "Barton", "email": "josh.carlisle@appdynamics.com"}
+]

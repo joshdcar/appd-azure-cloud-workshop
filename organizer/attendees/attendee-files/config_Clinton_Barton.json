@@ -1,0 +1,6 @@
+{
+  "Region": "southcentralus",
+  "AzureResourceGroup": "azure-workshop-clinton-barton",
+  "DotnetAgentVMUsername": "appdadmin",
+  "DotnetAgentVMPassword": "AppDynamicsR0ck$!"
+}

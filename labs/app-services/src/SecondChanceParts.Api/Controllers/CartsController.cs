@@ -1,4 +1,7 @@
-﻿using System;
+﻿using System.Security.AccessControl;
+using System;
+using System.Text;
+using System.Text.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using SecondChanceParts.Api.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Azure.ServiceBus;
 
 namespace SecondChanceparts.Api.Controllers
 {
@@ -16,11 +21,17 @@ namespace SecondChanceparts.Api.Controllers
 
         private readonly SecondChanceParts.Api.Data.SecondChancePartsContext _context;
         private readonly ILogger<CartsController> _logger;
+        private IConfiguration _config;
+        private string _serviceBusConnection;
+        static ITopicClient _topicClient;
+        const string _topicName = "OrderTopic";
 
-        public CartsController(SecondChanceParts.Api.Data.SecondChancePartsContext context,ILogger<CartsController> logger)
+        public CartsController(SecondChanceParts.Api.Data.SecondChancePartsContext context,ILogger<CartsController> logger,IConfiguration configuration)
         {
             _context = context;
             _logger = logger;
+            _config = configuration;
+            _serviceBusConnection = _config["AppSettings:ServiceBusConnection"];
         }
         
       
@@ -79,6 +90,13 @@ namespace SecondChanceparts.Api.Controllers
 
             ShoppingCart.CartStatus = "Checked-Out";
             await _context.SaveChangesAsync();
+
+            //set a topic
+            _topicClient = new TopicClient(_serviceBusConnection,_topicName);
+            var body = JsonSerializer.Serialize(cart);
+            var message = new Message(Encoding.UTF8.GetBytes(body));
+            await _topicClient.SendAsync(message);
+            await _topicClient.CloseAsync();
 
             return Ok(ShoppingCart);
 

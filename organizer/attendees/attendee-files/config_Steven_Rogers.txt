@@ -1,0 +1,35 @@
+
+    @"
+        Hello Steven,
+
+        We are looking forward to you joining us on our upcoming AppDynamics Cloud Clickstart for Azure.  The following are some details  
+        that you will need for the workshop. You can find additional instructions for workshop at https://github.com/joshdcar/appd-azure-cloud-workshop.
+
+        Please note the following details you will require for the workshop:
+
+        Azure Region: eastus2
+        Azure Resource Group: azure-workshop-steven-rogers
+
+        Azure Login Details:
+        Username: Steven.Rogers@appdcloud.onmicrosoft.com
+        Password: AppDynamicsR0ck$!
+
+        Controller Details:
+        Url: http://52.242.85.128:8090
+        Username: admin
+        Password: welcome1
+        SSH: Enabled (see attached PEM file)
+        
+        Dotnet Agent Login Details:
+        IP Address: Available after provisioning in the lab
+        username: appdadmin
+        password: AppDynamicsR0ck$!
+
+        Service Principal for use with AppDynamics Extensions:
+        {   "appId": "652601fa-c369-4b2a-a3d6-a2fa593c66b8",   "displayName": "appd_sp_steven_rogers",   "name": "http://appd_sp_steven_rogers",   "password": "0fc5bcba-7075-4f26-8c86-ba39d698e2c5",   "tenant": "f0705e98-bb08-4271-a963-a72b0f248254" } 
+        
+        Subscription ID (used with extensions): 
+        d4d4c111-4d43-41b2-bb7f-a9727e5d0ffa
+
+    Additional details for validating your account and and workshop prereqs can be found at https://github.com/joshdcar/appd-azure-cloud-workshop.
+     

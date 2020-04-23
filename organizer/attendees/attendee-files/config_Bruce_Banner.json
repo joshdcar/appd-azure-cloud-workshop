@@ -1,0 +1,6 @@
+{
+  "DotnetAgentVMUsername": "appdadmin",
+  "Region": "westus",
+  "AzureResourceGroup": "azure-workshop-bruce-banner",
+  "DotnetAgentVMPassword": "AppDynamicsR0ck$!"
+}

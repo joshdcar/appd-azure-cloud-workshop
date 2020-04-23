@@ -1,7 +1,7 @@
 {
-    "Region": "East US",
-    "AzureResourceGroup": "azure-workshop-tony-stark",
-    "DotnetAgentVMUsername": "appdadmin",
-    "DotnetAgentVMPassword": "AppDynamicsR0ck$!"
+  "DotnetAgentVMUsername": "appdadmin",
+  "Region": "eastus2",
+  "AzureResourceGroup": "azure-workshop-steven-rogers",
+  "DotnetAgentVMPassword": "AppDynamicsR0ck$!"
   }
   

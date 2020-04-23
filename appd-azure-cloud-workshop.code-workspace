@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "labs/app-services/src/SecondChanceParts.Api"
+		},
+		{
+			"path": "labs/azure-functions/src/SecondChanceParts.Functions"
 		}
 	],
 	"settings": {},

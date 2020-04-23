@@ -84,8 +84,8 @@ foreach($attendee in $attendees) {
     az vm create `
         --resource-group $resourceGroup `
         --name $vmname `
-        --image "/subscriptions/d4d4c111-4d43-41b2-bb7f-a9727e5d0ffa/resourceGroups/workshop-resources/providers/Microsoft.Compute/galleries/Azure_Workshop_Images/images/Azure_Workshop_Controller_Image/versions/1.0.0" `
-        --size Standard_D2s_v3 `
+        --image "/subscriptions/$subscriptionId/resourceGroups/workshop-resources/providers/Microsoft.Compute/galleries/Azure_Workshop_Images/images/Azure_Workshop_Controller_Image/versions/1.0.0" `
+        --size Standard_DS2_v2 `
         --admin-username $vmusername  `
         --os-disk-size-gb 100 `
         --ssh-key-value "../../environment/shared/keys/AppD-Cloud-Kickstart-Azure.pub" `
@@ -113,13 +113,12 @@ foreach($attendee in $attendees) {
 
     Write-Host ("Controller VM created at IP $controllerIpAddress") -ForegroundColor Green
 
-    #create the SP for their resource group for use by the extensions
-    az ad sp create-for-rbac -n "appd" --role contributor --scope /subscriptions/{SubID}
-
     #Create Service Principal for use by the extension with a scope limited to the user's resource group
-    $appName = "appd_sp_$($attendee.FirstName.)_$($attendee.LastName)".ToLower()
-    $scope = "/subscriptions/d4d4c111-4d43-41b2-bb7f-a9727e5d0ffa/resourceGroups/$resourceGroup"
-    $servicePrincipal = az ad sp create-for-rbac -n  --role reader --scopes $scope
+    $appName = "appd_sp_$($attendee.FirstName)_$($attendee.LastName)".ToLower()
+    $scope = "/subscriptions/$subscriptionId/resourceGroups/$resourceGroup"
+    $servicePrincipal = az ad sp create-for-rbac -n $appName --role Reader --scopes $scope
+
+    Write-Host ("Service Principal Created") -ForegroundColor Green
 
     $attendeeConfig = @{
         AzureResourceGroup = $resourceGroup
@@ -170,18 +169,3 @@ foreach($attendee in $attendees) {
     Write-Host ("Attendee Configuration Written (config_$($attendee.Firstname)_$($attendee.Lastname).txt)") -ForegroundColor Green
 }
 
-
-
-<# PS /Users/josh.carlisle/dev/AppDynamics/appd-azure-cloud-workshop/labs/azure-extensions/deploy> az ad sp create-for-rbac -n "appd-sp-tony-stark-2" --role reader --scopes /subscript
-ions/d4d4c111-4d43-41b2-bb7f-a9727e5d0ffa/resourceGroups/azure-workshop-tony-stark
-Changing "appd-sp-tony-stark-2" to a valid URI of "http://appd-sp-tony-stark-2", which is the required format used for service principal names
-Creating a role assignment under the scope of "/subscriptions/d4d4c111-4d43-41b2-bb7f-a9727e5d0ffa/resourceGroups/azure-workshop-tony-stark"
-  Retrying role assignment creation: 1/36
-{
-  "appId": "632f406c-25ea-44c9-b8cd-7fc6a46c22f5",
-  "displayName": "appd-sp-tony-stark-2",
-  "name": "http://appd-sp-tony-stark-2",
-  "password": "63d023ad-511a-4aec-af05-fa8cbdd06029",
-  "tenant": "f0705e98-bb08-4271-a963-a72b0f248254"
-}
-PS /Users/josh.carlisle/dev/AppDynamics/appd-azure-cloud-workshop/labs/azure-extensions/deploy>  #>

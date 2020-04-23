@@ -9,13 +9,13 @@
 
 It's also important to understand the role of Application Insights with Azure Monitor. Application Insights is an APM solution that is part of the Azure Monitor family but a seperate feature. You wil find some scenerios such as App Services and Azure Functions where application insights is often turned on by default. It is generally advisable that existing Application Insights is turned off prior to configuring AppDynamics agents.  Although scenerios where they can co-exist it is not recommended.
 
-> **TIP:** It is very common that customers who use Application Insights have also instrumented their applications through the SDK.  Application Insights has historically been very SDK dependant and still requires the SDK for advanced features.  Custom SDK code does not need to be removed for the AppDynamics agent to be functional. 
+> **TIP:** It is very common that customers who use Application Insights have also instrumented their applications through the SDK.  Application Insights has historically been very SDK dependant and still requires the SDK for advanced features.  Custom SDK code does not need to be removed and does not conflict with the AppDynamics agents.
 
 ## Azure Monitor Extensions for AppDynamics Overview
 
-Azure Monitor Extensions consume Azure Monitor metric which are available in the form of Custom Metrics in AppDynamics.  There are actually two different extensions for Azure Monitor available. The recommended extension, and the one in which this lab uses, is based on the .Net Agent and as such requires a Windows Server, the AppDynamics .Net Agent, the [AppDynamics Manager for .Net Agent Extensions](https://www.appdynamics.com/community/exchange/extension/appdynamics-net-agent-extension-manager/), and finally the actual [Azure Monitor .Net Extension](https://www.appdynamics.com/community/exchange/extension/azure-monitor-net-extension).  
+Azure Monitor Extensions consume Azure Monitor metric which are made available in the form of Custom Metrics in AppDynamics.  Two extensions for Azure Monitor available. The recommended extension, and the one in which this lab uses, is based on the .Net Agent and as such requires a Windows Server, the AppDynamics .Net Agent, the [AppDynamics Manager for .Net Agent Extensions](https://www.appdynamics.com/community/exchange/extension/appdynamics-net-agent-extension-manager/), and finally the actual [Azure Monitor .Net Extension](https://www.appdynamics.com/community/exchange/extension/azure-monitor-net-extension).  
 
-The Azure Monitor .Net Extensions make use of the [Azure Monitor REST API](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/rest-api-walkthrough) to poll and consume metrics. Although knowledge of the API is not required to configure the extensions it can be helpful when understanding the varios resource configuration options.
+The Azure Monitor .Net Extensions make use of the [Azure Monitor REST API](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/rest-api-walkthrough) to poll and consume metrics. Although knowledge of the API is not required to configure the extensions it can be helpful when understanding the varios resource configuration options and limitations.
 
 ### **Access and Credentials**
 
@@ -31,6 +31,10 @@ As part of your workshop welcome message you will have received some credentials
 }
 ```
 These are access details for a Azure Service Principal, a type of Azure AD Application, that acts as credentials when configuring the Azure Monitor Extensions to communicate with Azure resources to query metrics. 
+
+There are several methods to generate service accounts. One common approach outside the portal is the Azure CLI command **az ad sp create-for-rbac** [command](https://docs.microsoft.com/en-us/cli/azure/ad/sp?view=azure-cli-latest#az-ad-sp-create-for-rbac). By default these commands create subscription level contribute permissions which is *VERY* permissive. It is suggested to use a reader role.  In the case of this workshop the credentials are reader and the scope is limited to the resource group of the attendee.
+
+> **TIP:** You can actually use these credentials to [login](https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli?view=azure-cli-latest) with the Azure CLI as well. You are still limited by the role and scope but can come in very handy at times!
 
 
 ## **Lab Scenerio**
@@ -160,7 +164,8 @@ Visit the AppDynamics controller address provided as part of the workshop welcom
 
 ![agentDownload][agentDownload]
 
-> **IMPORTANT!!!** For all downloaded files (executable and dlls) ensure they are **not blocked**. Files downloaded from an unknown internet source are often blocked by Windows and will cause various issues during the install (see troubleshooting section). Right click on each executable and dll and choose check unblock. ![unblock][unblock] 
+> **IMPORTANT!!!** For all downloaded files (executable and dlls) ensure they are **not blocked**. Files downloaded from an unknown internet source are often blocked by Windows and will cause various issues during the install (see troubleshooting section). Right click on each executable and dll and choose check unblock. 
+> ![unblock][unblock] 
 
 ### **Step #3** - Install Dotnet Agent Extensions
 
@@ -219,9 +224,7 @@ Lastly the credentials portion of the configuration should be updated to relfect
 * SUBSCRIPTION_ID = subscription
 * ALLOWED_METRIC_NAME_REGEX = "" (remove the default *)
 
-> **TIP:** There are several methods to generate service accounts. One common approach outside the portal is the Azure CLI command **az ad sp create-for-rbac** [command](https://docs.microsoft.com/en-us/cli/azure/ad/sp?view=azure-cli-latest#az-ad-sp-create-for-rbac). By default these commands create subscription level contribute permissions which is *VERY* permissive. It is suggested to use a reader role.  In the case of this workshop the credentials are reader and the scope is limited to the resource group of the attendee.
 
-> **TIP:** You can actually use these credentials to [login](https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli?view=azure-cli-latest) with the Azure CLI as well. You are still limited by the role and scope but can come in very handy at times!
 
 
 #### **Confirming Configuration**
