@@ -29,7 +29,7 @@ set -x  # turn command display back ON.
 # appd platform install parameters.
 appd_home="${appd_home:-/opt/appdynamics}"
 appd_platform_home="${appd_platform_home:-platform}"
-appd_platform_release="${appd_platform_release:-20.3.3.21908}"
+appd_platform_release="${appd_platform_release:-20.4.0.22285}"
 set +x  # temporarily turn command display OFF.
 appd_platform_admin_username="${appd_platform_admin_username:-admin}"
 appd_platform_admin_password="${appd_platform_admin_password:-welcome1}"
@@ -47,27 +47,32 @@ usage() {
   cat <<EOF
 Usage:
   Install AppDynamics Enterprise Console by AppDynamics.
+
   NOTE: All inputs are defined by external environment variables.
         Optional variables have reasonable defaults, but you may override as needed.
         Script should be run with 'root' privilege.
+
   -------------------------------------
   Description of Environment Variables:
   -------------------------------------
   [MANDATORY] appdynamics account parameters.
     [root]# export appd_username="name@example.com"                     # user name for downloading binaries.
     [root]# export appd_password="password"                             # user password.
+
   [OPTIONAL] appdynamics platform install parameters [w/ defaults].
     [root]# export appd_home="/opt/appdynamics"                         # [optional] appd home (defaults to '/opt/appdynamics').
     [root]# export appd_platform_home="platform"                        # [optional] platform home folder (defaults to 'platform').
-    [root]# export appd_platform_release="20.3.3.21908"                 # [optional] platform release (defaults to '20.3.3.21908').
+    [root]# export appd_platform_release="20.4.0.22285"                 # [optional] platform release (defaults to '20.4.0.22285').
     [root]# export appd_platform_admin_username="admin"                 # [optional] platform admin user name (defaults to user 'admin').
     [root]# export appd_platform_admin_password="welcome1"              # [optional] platform admin password (defaults to 'welcome1').
     [root]# export appd_platform_db_password="welcome1"                 # [optional] platform database password (defaults to 'welcome1').
     [root]# export appd_platform_db_root_password="welcome1"            # [optional] platform database root password (defaults to 'welcome1').
     [root]# export appd_platform_server_host="apm"                      # [optional] platform server hostname (defaults to 'uname -n').
     [root]# export appd_platform_server_port="9191"                     # [optional] platform server port (defaults to '9191').
+
   [OPTIONAL] appdynamics cloud kickstart home folder [w/ default].
     [root]# export kickstart_home="/opt/appd-cloud-kickstart"           # [optional] kickstart home (defaults to '/opt/appd-cloud-kickstart').
+
   --------
   Example:
   --------
@@ -93,7 +98,7 @@ set -x  # turn command display back ON.
 # set appdynamics platform installation variables. -------------------------------------------------
 appd_platform_folder="${appd_home}/${appd_platform_home}"
 appd_platform_installer="platform-setup-x64-linux-${appd_platform_release}.sh"
-appd_platform_sha256="5ae4f247633fa8d7264f56263c9f49ccd393ff06ccfcd2e0132bc63edca8bf52"
+appd_platform_sha256="b542e333b3c5a15f98190645b572ae18c39577466076b2bf4b0cd1373b91ab59"
 
 # install platform prerequisites. ------------------------------------------------------------------
 # install the netstat network utility.
@@ -123,6 +128,7 @@ if [ "$distro_name" = "Amazon" ]; then
 fi
 
 # configure file and process limits for user 'root'.
+echo "Displaying current file and process limits..."
 ulimit -S -n
 ulimit -S -u
 
@@ -145,14 +151,25 @@ pam_dir="/etc/pam.d"
 session_conf="common-session"
 session_cmd="session required pam_limits.so"
 if [ -d "$pam_dir" ]; then
-  if [ -f "$session_conf" ]; then
-    grep -qF "${session_cmd}" ${session_conf} || echo "${session_cmd}" >> ${session_conf}
+  if [ -f "${pam_dir}/${session_conf}" ]; then
+    grep -qF "${session_cmd}" "${pam_dir}/${session_conf}" || echo "${session_cmd}" >> "${pam_dir}/${session_conf}"
   else
-    echo "${session_cmd}" > ${session_conf}
+    echo "${session_cmd}" > "${pam_dir}/${session_conf}"
   fi
 fi
 
-# verify new file and process limits.
+# set current file and process limits.
+echo "Setting current file and process limits..."
+ulimit -n ${num_file_descriptors}
+ulimit -u ${num_processes}
+
+# verify current file and process limits.
+echo "Verifying current file and process limits..."
+ulimit -S -n
+ulimit -S -u
+
+# verify file and process limits for new processes.
+echo "Verifying file and process limits for new processes..."
 runuser -c "ulimit -S -n" -
 runuser -c "ulimit -S -u" -
 
